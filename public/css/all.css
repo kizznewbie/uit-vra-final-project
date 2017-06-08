@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'icon-font';
+  src: url("./../assets/fontello.ttf") format("truetype"); }
+
+.main-layout {
+  margin: 0 auto;
+  width: 70%; }
+
+.drawing-area {
+  width: 640px;
+  max-width: 100%;
+  height: 480px;
+  max-height: 100%;
+  margin: 0 auto;
+  border: 2px solid black; }
+
+.drawing-panel, #drawing-panel {
+  width: 100%;
+  height: 100%; }
+
+div.btn-wrapper {
+  width: 100%;
+  text-align: center;
+  margin-top: 10px; }
+  div.btn-wrapper #query-btn {
+    width: 100px;
+    height: 30px;
+    font-size: 15px;
+    line-height: 15px;
+    font-weight: bold; }

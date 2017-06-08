@@ -1,0 +1,17 @@
+{
+  "name": "Hoa-Vu",
+  "version": "1.0.0",
+  "dependencies": {
+    "express": "*",
+    "body-parser": "*",
+    "gulp": "*",
+    "gulp-jade": "*",
+    "gulp-sass": "*",
+    "del": "*",
+    "gulp-concat": "*",
+    "gulp-imagemin": "*",
+    "gulp-nodemon": "*",
+    "gulp-auto-restart": "*",
+    "multer": "*"
+  }
+}
