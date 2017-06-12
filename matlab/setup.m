@@ -15,13 +15,14 @@ numTestImgs = size(imgTestData, 2);
 
 % Begin define variables
 hogOpts = struct;
+LBPOpts = struct;
 hogOpts.cellSize = {
     [2, 2],
     [3, 3],
     [4, 4],
     [5, 5],
     [6, 6],
-    [8, 8],
+    [8, 8]
 
 };
 hogOpts.blockSize = {
@@ -31,3 +32,14 @@ hogOpts.blockSize = {
 };
 
 hogOpts.numBin = [4, 9, 12, 16];
+
+LBPOpts.radius = [1:5];
+LBPOpts.numNeighbor = [4, 8, 16, 24];
+LBPOpts.cellSize = {
+    [2, 2],
+    [3, 3],
+    [4, 4],
+    [5, 5],
+    [6, 6],
+    [8, 8]
+};
