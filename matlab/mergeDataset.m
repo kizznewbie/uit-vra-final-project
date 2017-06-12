@@ -1,6 +1,3 @@
-datasetUrl = './../dataset/101_ObjectCategories';
-mergedDatasetUrl = './../datasets/';
-testDatasetUrl = './../datasets_test/';
 categories = dir(datasetUrl);
 idx = 1;
 name = {};
