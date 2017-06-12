@@ -1,9 +1,0 @@
-setup();
-% createCategoryFolder()
-
-
-
-for i = 1 : length(hogCellSize)
-    featureVector = ExtractFeaturesHog(imgData ,hogCellSize{i});
-    save(['HOGFF'], featureVector, '-mat');
-end;
