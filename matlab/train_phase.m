@@ -109,5 +109,11 @@ load([outputDir, '/', 'invertedIdx.m'], '-mat');
 %IDF weighting
 idf = log(vars.numImgs) - log(max(sum(invertedIdx, 2) ,1));
 invertedIdx_idf = spdiags(idf, 0, vars.numWord, vars.numWord) * invertedIdx;
-l2 = sqrt(sum(invertedIdx_idf.*invertedIdx_idf, 1))';
+l2 = 1./sqrt(sum(invertedIdx_idf.*invertedIdx_idf, 1))';
 invertedIdx_idf_l2 = invertedIdx_idf * spdiags(l2, 0, vars.numImgs, vars.numImgs);
+save([outputDir, '/', 'idf.m'], 'idf', '-mat', '-v7.3');
+save([outputDir, '/', 'invertedIdx_idf.m'], 'invertedIdx_idf', '-mat', '-v7.3');
+save([outputDir, '/', 'invertedIdx_idf_l2.m'], 'invertedIdx_idf_l2', '-mat', '-v7.3');
+load([outputDir, '/', 'invertedIdx_idf.m'], '-mat');
+load([outputDir, '/', 'idf.m'], '-mat');
+load([outputDir, '/', 'invertedIdx_idf_l2.m'], '-mat');
