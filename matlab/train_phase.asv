@@ -75,10 +75,8 @@ vocab5 = vl_kmeans(descs, numWord, 'verbose', 'algorithm', 'ANN') ;
 save([outputDir, '/', 'vocab5_1000.m'], 'vocab5', '-mat', '-v7.3');
 % save([outputDir, '/', 'vocab5_5000.m'], 'vocab6', '-mat', '-v7.3');
 
-load([outputDir, '/', 'vocab5_1000.m'], '-mat');
-
 vocab = vocab5;
 
 kdtree = vl_kdtreebuild(vocab);
 
-save([outputDir, '/', 'kdtree5_1000.m'], 'kdtree', '-mat', '-v7.3');
+save([outputDir, '/', 'kdtree5_1000.m'], 'vocab5', '-mat', '-v7.3');
