@@ -104,3 +104,10 @@ end;
 
 invertedIdx = sparse(double([imgInvidualVisualWords{:}]), [idx{:}], 1, vars.numWord, vars.numImgs);
 save([outputDir, '/', 'invertedIdx.m'], 'invertedIdx', '-mat', '-v7.3');
+load([outputDir, '/', 'invertedIdx.m'], '-mat');
+
+%IDF weighting
+idf = log(vars.numImgs) - log(max(sum(invertedIdx, 2) ,1));
+invertedIdx_idf = spdiags(idf, 0, vars.numWord, vars.numWord) * invertedIdx;
+l2 = sqrt(sum(invertedIdx_idf.*invertedIdx_idf, 1))';
+invertedIdx_idf_l2 = invertedIdx_idf * spdiags(l2, 0, vars.numImgs, vars.numImgs);

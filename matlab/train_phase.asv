@@ -66,9 +66,9 @@ subDescs = single(vl_colsubset(cat(2, descs{:}), 10e5));
 % numWord = 500;
 % fprintf('KNN with %d points \n', numWord);
 % vocab4 = vl_kmeans(descs, numWord, 'verbose', 'algorithm', 'ANN') ;
-numWord = 10e2;
-fprintf('KNN with %d points \n', numWord);
-vocab5 = vl_kmeans(subDescs, numWord, 'verbose', 'algorithm', 'ANN') ;
+var.numWord = 10e2;
+fprintf('KNN with %d points \n', var.numWord);
+vocab5 = vl_kmeans(subDescs, var.numWord, 'verbose', 'algorithm', 'ANN') ;
 % numWord = 5*10e2;
 % fprintf('KNN with %d points \n', numWord);
 % vocab6 = vl_kmeans(descs, numWord, 'verbose', 'algorithm', 'ANN') ;
@@ -97,4 +97,15 @@ save([outputDir, '/', 'imgInvidualVisualWords5_1000.m'], 'imgInvidualVisualWords
 load([outputDir, '/', 'imgInvidualVisualWords5_1000.m'], '-mat');
 
 % Creating Inverted Index
-idx = ones(1, vars.numImgs)
+idx = cell(1, vars.numImgs);
+for i = 1 : vars.numImgs
+    idx{i} = i * ones(1, length(imgInvidualVisualWords{i}));
+end;
+
+invertedIdx = sparse(double([imgInvidualVisualWords{:}]), [idx{:}], 1, vars.numWord, vars.numImgs);
+save([outputDir, '/', 'invertedIdx.m'], 'invertedIdx', '-mat', '-v7.3');
+load([outputDir, '/', 'invertedIdx.m'], '-mat');
+
+%IDF weighting
+idf = log(vars.numImgs) - log(max(sum(invertedIdx, 2) ,1));
+invertedIdx_idf = spdiags(idf, 0, ,var.numImgs) * invertedIdx;
