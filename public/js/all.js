@@ -9,7 +9,7 @@ $(function() {
       fileBtn = $('#file-btn'),
       namespace = 'imageRetrieval',
       isMouseDown = false,
-      startX, startY, mouseMoveTimeout, imgW, imgH;
+      startX, startY, mouseMoveTimeout, w, h, imgW, imgH;
   var context, mouseMoveTimeout;
 
   var init = function() {
@@ -25,8 +25,8 @@ $(function() {
       width: '',
       height: ''
     };
-    var h = e.offsetY - startY,
-        w = e.offsetX - startX;
+    h = e.offsetY - startY;
+    w = e.offsetX - startX;
     if(h < 0) {
       _css.bottom = imgH - startY;
       _css.height = Math.abs(h);
@@ -47,7 +47,19 @@ $(function() {
   };
 
   var sendAjax = function() {
-    var url = '/query';
+    var url = '/query',
+        formData = new FormData();
+    formData.append('file', fileBtn[0].files[0]);
+    var _css = {
+      startX: startX/imgW,
+      startY: startY/imgH,
+      w: w/imgW,
+      h: h/imgH,
+      top: overlay.css('top'),
+      left: overlay.css('left'),
+      right: overlay.css('right'),
+      bottom: overlay.css('bottom')
+    };
     $.ajax({
       url: url,
       type: 'POST',
