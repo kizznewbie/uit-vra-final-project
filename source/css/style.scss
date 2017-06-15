@@ -44,6 +44,9 @@
   border: 2px solid black;
   overflow: hidden;
   position: relative;
+  #form_tmp {
+    display: none;
+  }
   #choosen-img {
     width: 100%;
     user-select: none;

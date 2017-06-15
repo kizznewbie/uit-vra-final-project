@@ -40,6 +40,8 @@
   border: 2px solid black;
   overflow: hidden;
   position: relative; }
+  .img-area #form_tmp {
+    display: none; }
   .img-area #choosen-img {
     width: 100%;
     user-select: none;

@@ -11,10 +11,10 @@ var express = require('express'),
 /*init*/
 storage = multer.diskStorage({
   destination: function(req, file, cb) {
-    cb(null, '/upload/');
+    cb(null, './upload/');
   },
   filename: function(req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now());
+    cb(null, file.fieldname + '-' + Date.now() + '.jpg');
   }
 });
 
@@ -70,7 +70,6 @@ var readResult = function(filename, callback) {
 
 };
 
-readResult('wao');
 /*******Routing Here********/
 app.get('/', function(req, res) {
   res.sendFile('/public/html/index.html', {root: __dirname}, function(err) {
@@ -80,12 +79,12 @@ app.get('/', function(req, res) {
 
 app.post('/query', upload.single('image'), function(req, res) {
   query = buildMatlabQuery('wao');
-  exec(query, function(err, stdout, stderr) {
-
-
-    res.send(query);
-    res.end();
-  });
+  res.send('123');
+  res.end();
+  // exec(query, function(err, stdout, stderr) {
+  //   res.send(query);
+  //   res.end();
+  // });
 
 });
 

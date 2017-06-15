@@ -49,7 +49,6 @@ $(function() {
   var sendAjax = function() {
     var url = '/query',
         formData = new FormData();
-    formData.append('file', fileBtn[0].files[0]);
     var _css = {
       startX: startX/imgW,
       startY: startY/imgH,
@@ -60,10 +59,16 @@ $(function() {
       right: overlay.css('right'),
       bottom: overlay.css('bottom')
     };
+    formData.append('image', fileBtn[0].files[0]);
+    formData.append('css', _css);
     $.ajax({
       url: url,
       type: 'POST',
-      dataType: 'text'
+      processData: false,
+      contentType: false,
+      enctype: 'multipart/form-data',
+      dataType: 'text',
+      data: formData
     })
     .done(function(data, status, jqXHR) {
       console.log(data);
