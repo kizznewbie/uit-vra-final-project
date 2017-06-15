@@ -8,14 +8,23 @@
     <script src="/js/all.js"></script>
   </head>
   <body>
+    <div id="popup">
+      <div class="popup-content">
+        <div class="content"></div>
+      </div>
+      <div class="popup-overlay"></div>
+    </div>
     <div class="main-layout">
-      <div class="drawing-area">
-        <div class="drawing-panel">
-          <canvas id="drawing-panel"></canvas>
+      <div class="img-area">
+        <div id="img-panel" class="img-panel"><img id="choosen-img"/>
+          <div id="overlay"></div>
         </div>
       </div>
       <div class="btn-wrapper">
-        <button id="query-btn" type="button">Query!</button>
+        <button id="clear-btn" type="button">Clear!</button>
+        <input id="file-btn" type="file"/>
+        <button id="browse-btn" type="button">Browse!</button>
+        <button id="query-btn" type="button" disabled="true">Query!</button>
       </div>
     </div>
   </body>

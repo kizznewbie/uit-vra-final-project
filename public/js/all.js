@@ -1,44 +1,49 @@
 $(function() {
-  var drawingPanel = $('#drawing-panel'),
-      drawingWrapper = $('div.drawing-area'),
+  var imgPanel = $('#img-panel'),
+      imgWrapper = $('.img-area'),
+      overlay = $('#overlay'),
+      choosenImg = $('#choosen-img'),
       queryBtn = $('#query-btn'),
-      namespace = 'canvas',
-      canvas = drawingPanel[0],
-      canvasWrapperPos = drawingWrapper.offset(),
-      canvasWrapperX = canvasWrapperPos.left,
-      canvasWrapperY = canvasWrapperPos.top,
-      isMouseDown = false;
+      clearBtn = $('#clear-btn'),
+      browseBtn = $('#browse-btn'),
+      fileBtn = $('#file-btn'),
+      namespace = 'imageRetrieval',
+      isMouseDown = false,
+      startX, startY, mouseMoveTimeout, imgW, imgH;
   var context, mouseMoveTimeout;
 
   var init = function() {
-    canvas.width = drawingWrapper.width(),
-    canvas.height = drawingWrapper.height()
-    context = canvas.getContext('2d');
-    context.lineWidth = 10;
-    context.strokeStyle = 'black';
+
   };
 
-  var drawingPanelMouseDownHandler = function(e) {
-    isMouseDown = true;
-    context.beginPath();
-    context.moveTo(e.offsetX, e.offsetY);
-  };
-
-  var drawingPanelMouseUpHandler = function(e) {
-    isMouseDown = false;
-    context.closePath();
-  };
-
-  var drawingPanelMouseMoveHandler = function(e) {
-    if(mouseMoveTimeout) {
-      clearTimeout(mouseMoveTimeout);
+  var choosenImgMouseMove = function(e) {
+    var _css = {
+      top: '',
+      bottom: '',
+      right: '',
+      left: '',
+      width: '',
+      height: ''
+    };
+    var h = e.offsetY - startY,
+        w = e.offsetX - startX;
+    if(h < 0) {
+      _css.bottom = imgH - startY;
+      _css.height = Math.abs(h);
     }
-    mouseMoveTimeout = setTimeout(function() {
-      if(isMouseDown) {
-        context.lineTo(e.offsetX, e.offsetY);
-        context.stroke();
-      }
-    }, 10);
+    else {
+      _css.top = startY;
+      _css.height = h;
+    }
+    if(w < 0) {
+      _css.right = imgW - startX;
+      _css.width = Math.abs(w);
+    }
+    else {
+      _css.left = startY;
+      _css.width = w;
+    }
+    overlay.css(_css);
   };
 
   var sendAjax = function() {
@@ -58,23 +63,63 @@ $(function() {
 
   init();
 
-  drawingPanel
-    .off('mousedown.' + namespace)
-    .on('mousedown.' + namespace, function(e) {
-      drawingPanelMouseDownHandler.call(this, e);
-    })
-    .off('mouseup.' + namespace)
-    .on('mouseup.' + namespace, function(e) {
-      drawingPanelMouseUpHandler.call(this, e);
-    })
-    .off('mousemove.' + namespace)
-    .on('mousemove.' + namespace, function(e) {
-      drawingPanelMouseMoveHandler.call(this, e);
-    });
-
   queryBtn
     .off('click.' + namespace)
     .on('click.' + namespace, function(e) {
       sendAjax();
+    });
+  clearBtn
+    .off('click.' + namespace)
+    .on('click.' + namespace, function(e) {
+      choosenImg.attr('src', '');
+      queryBtn.attr('disabled', true);
+    });
+  choosenImg
+    .off('mousedown.' + namespace)
+    .on('mousedown.' + namespace, function(e) {
+      isMouseDown = true;
+      startY = e.offsetY;
+      startX = e.offsetX;
+      overlay.css({
+        top: e.offsetY,
+        left: e.offsetX,
+        'display': 'block'
+      });
+    })
+    .off('mouseup.' + namespace)
+    .on('mouseup.' + namespace, function(e) {
+      isMouseDown = false;
+      if(overlay.innerWidth() == 0 || overlay.innerHeight() == 0) {
+        overlay.css('display', 'none');
+      }
+    })
+    .off('mousemove.' + namespace)
+    .on('mousemove.' + namespace, function(e) {
+      if(isMouseDown) {
+        clearTimeout(mouseMoveTimeout);
+        mouseMoveTimeout = setTimeout(function() {
+          choosenImgMouseMove(e);
+        }, 10);
+      }
+    })
+  browseBtn
+    .off('click.' + namespace)
+    .on('click.' + namespace, function(e) {
+      fileBtn.trigger('click');
+    });
+  choosenImg[0].onload = function() {
+    imgH = choosenImg.height();
+    imgW = choosenImg.width();
+    queryBtn.attr('disabled', false);
+  };
+  fileBtn
+    .off('change.' + namespace)
+    .on('change.' + namespace, function(e) {
+      console.log(e);
+      var reader = new FileReader();
+      reader.onload = function() {
+        choosenImg.attr('src', reader.result);
+      };
+      reader.readAsDataURL(e.originalEvent.srcElement.files[0]);
     });
 });
