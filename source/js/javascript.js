@@ -50,24 +50,21 @@ $(function() {
     var url = '/query',
         formData = new FormData();
     var _css = {
-      startX: startX/imgW,
-      startY: startY/imgH,
       w: w/imgW,
       h: h/imgH,
-      top: overlay.css('top'),
-      left: overlay.css('left'),
-      right: overlay.css('right'),
-      bottom: overlay.css('bottom')
+      top: parseInt(overlay.css('top'))/imgW,
+      left: parseInt(overlay.css('left'))/imgW,
     };
+    console.log(_css);
     formData.append('image', fileBtn[0].files[0]);
-    formData.append('css', _css);
+    formData.append('css', JSON.stringify(_css));
     $.ajax({
       url: url,
       type: 'POST',
       processData: false,
       contentType: false,
       enctype: 'multipart/form-data',
-      dataType: 'text',
+      dataType: 'json',
       data: formData
     })
     .done(function(data, status, jqXHR) {

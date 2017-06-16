@@ -11,7 +11,7 @@ var express = require('express'),
 /*init*/
 storage = multer.diskStorage({
   destination: function(req, file, cb) {
-    cb(null, './upload/');
+    cb(null, __dirname + config.uploadPath);
   },
   filename: function(req, file, cb) {
     cb(null, file.fieldname + '-' + Date.now() + '.jpg');
@@ -32,8 +32,8 @@ app.use(bodyParser.json());
 
 
 /**************Function***************/
-var buildMatlabQuery = function(filename) {
-  func = config.func + '(\'' + filename +'\')';
+var buildMatlabQuery = function(filename, startX, startY, w, h) {
+  func = config.func + '(\'' + filename +'\',' + startX + ',' + startY + ',' + w + ',' + h + ')';
   query = config.matlabBin
           + config.option
               .replace('{matlab_func}', func)
@@ -78,13 +78,32 @@ app.get('/', function(req, res) {
 });
 
 app.post('/query', upload.single('image'), function(req, res) {
-  query = buildMatlabQuery('wao');
-  res.send('123');
-  res.end();
-  // exec(query, function(err, stdout, stderr) {
-  //   res.send(query);
-  //   res.end();
-  // });
+  var fileName = req.file.filename,
+      css = JSON.parse(req.body.css);
+
+  var w = css.w,
+      h = css.h;
+      top =  css.top,
+      left = css.left;
+  if(!top) {
+    top = 0;
+  }
+  if(!left) {
+    left = 0;
+  }
+  if(!w) {
+    w = 1;
+  }
+  if(!h) {
+    h = 1;
+  }
+
+  query = buildMatlabQuery(__dirname + config.uploadPath + fileName, left, top, w, h);
+  console.log(query);
+  exec(query, function(err, stdout, stderr) {
+    res.send(query);
+    res.end();
+  });
 
 });
 
