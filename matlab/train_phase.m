@@ -9,10 +9,10 @@
 % descs = {};
 % imdb = {};
 % orientations = true;
-%
-%
-%
-%
+% 
+% 
+% 
+% 
 % for i = 1 : vars.numImgs
 %     fprintf('Extracting feature of image %s \n', names{i});
 %     im = imread([mergedDatasetUrl, '/', names{i}]);
@@ -27,8 +27,8 @@
 %     descs{i} = desc;
 %     imdb{i} = im;
 % end;
-%
-%
+% 
+% 
 % save([outputDir, '/', 'vars.m'], 'vars', '-mat', '-v7.3');
 % save([outputDir, '/', 'raw_frames.m'], 'frames', '-mat', '-v7.3');
 % save([outputDir, '/', 'raw_descs.m'], 'descs', '-mat', '-v7.3');
@@ -66,9 +66,9 @@ subDescs = single(vl_colsubset(cat(2, descs{:}), 10e5));
 % numWord = 500;
 % fprintf('KNN with %d points \n', numWord);
 % vocab4 = vl_kmeans(descs, numWord, 'verbose', 'algorithm', 'ANN') ;
-var.numWord = 10e2;
-fprintf('KNN with %d points \n', var.numWord);
-vocab5 = vl_kmeans(subDescs, var.numWord, 'verbose', 'algorithm', 'ANN') ;
+vars.numWords = 10e2;
+fprintf('KNN with %d points \n', vars.numWords);
+vocab5 = vl_kmeans(subDescs, vars.numWords, 'verbose', 'algorithm', 'ANN') ;
 % numWord = 5*10e2;
 % fprintf('KNN with %d points \n', numWord);
 % vocab6 = vl_kmeans(descs, numWord, 'verbose', 'algorithm', 'ANN') ;
@@ -102,13 +102,13 @@ for i = 1 : vars.numImgs
     idx{i} = i * ones(1, length(imgInvidualVisualWords{i}));
 end;
 
-invertedIdx = sparse(double([imgInvidualVisualWords{:}]), [idx{:}], 1, vars.numWord, vars.numImgs);
+invertedIdx = sparse(double([imgInvidualVisualWords{:}]), [idx{:}], 1, vars.numWords, vars.numImgs);
 save([outputDir, '/', 'invertedIdx.m'], 'invertedIdx', '-mat', '-v7.3');
 load([outputDir, '/', 'invertedIdx.m'], '-mat');
 
 %IDF weighting
 idf = log(vars.numImgs) - log(max(sum(invertedIdx, 2) ,1));
-invertedIdx_idf = spdiags(idf, 0, vars.numWord, vars.numWord) * invertedIdx;
+invertedIdx_idf = spdiags(idf, 0, vars.numWords, vars.numWords) * invertedIdx;
 l2 = 1./sqrt(sum(invertedIdx_idf.*invertedIdx_idf, 1))';
 invertedIdx_idf_l2 = invertedIdx_idf * spdiags(l2, 0, vars.numImgs, vars.numImgs);
 save([outputDir, '/', 'idf.m'], 'idf', '-mat', '-v7.3');
