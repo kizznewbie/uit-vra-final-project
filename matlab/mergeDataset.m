@@ -1,21 +1,13 @@
-categories = dir(datasetUrl);
+imgs = dir([datasetUrl, '/*.jpg']);
 idx = 1;
-name = {};
-categoriesName = {categories.name};
+names = {imgs.name};
+imgCount = length([names]);
 
-for i = 1 : length(categoriesName)
-    url = [datasetUrl, '/', categoriesName{i}];
-    fprintf('Go to folder %s \n', categoriesName{i});
-    if isdir(url)
-        imgs = dir([url, '/*.jpg']);
-        names = {imgs.name};
-        fprintf('there are %d images founds\n', length(names));
-        for j = 1: length(names)
-            copyfile([url, '/', names{j}], [mergedDatasetUrl, num2str(idx), '.jpg']);
-            idx = idx + 1 ;
-        end;
-    end;
-end
+% fprintf('Copying file to datasets folder...\n');
+% for i = 1 : length([names])
+%         copyfile([datasetUrl, '/', names{i}], [mergedDatasetUrl, num2str(idx), '.jpg']);
+%         idx = idx + 1 ;
+% end
 
 fprintf('Creating test data');
 testIdx = randi(imgCount, 20);
