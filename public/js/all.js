@@ -8,12 +8,31 @@ $(function() {
       browseBtn = $('#browse-btn'),
       fileBtn = $('#file-btn'),
       namespace = 'imageRetrieval',
+      popup = $('#popup'),
+      popupCloseBtn = $('#popup-close-btn'),
+      popupOverlay = $('div.popup-overlay'),
       isMouseDown = false,
       startX, startY, mouseMoveTimeout, w, h, imgW, imgH;
   var context, mouseMoveTimeout;
 
   var init = function() {
 
+  };
+
+  var openPopup = function() {
+    popup.css('display', 'block');
+    popup.animate({
+      opacity: 1
+    }, 500, 'swing');
+  };
+  openPopup();
+  var closePopup = function() {
+
+    popup.animate({
+      opacity: 0
+    }, 500, 'swing', function() {
+      popup.css('display', 'none');
+    });
   };
 
   var choosenImgMouseMove = function(e) {
@@ -61,6 +80,7 @@ $(function() {
     $.ajax({
       url: url,
       type: 'POST',
+      timeout: 1000*60*60,
       processData: false,
       contentType: false,
       enctype: 'multipart/form-data',
@@ -135,5 +155,11 @@ $(function() {
         choosenImg.attr('src', reader.result);
       };
       reader.readAsDataURL(e.originalEvent.srcElement.files[0]);
+    });
+  popupCloseBtn
+    .add(popupOverlay)
+    .off('click.' + namespace)
+    .on('click.' + namespace, function(e) {
+      closePopup();
     });
 });

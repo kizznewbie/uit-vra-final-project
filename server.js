@@ -26,6 +26,7 @@ app.use('/imgs', express.static(__dirname + '/public/imgs'));
 app.use('/js', express.static(__dirname + '/public/js'));
 app.use('/css', express.static(__dirname + '/public/css'));
 app.use('/assets', express.static(__dirname + '/public/assets'));
+app.use('/upload', express.static(__dirname + '/upload'));
 app.use('/', express.static(__dirname + '/public/'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -99,9 +100,9 @@ app.post('/query', upload.single('image'), function(req, res) {
   }
 
   query = buildMatlabQuery(__dirname + config.uploadPath + fileName, left, top, w, h);
-  console.log(query);
   exec(query, function(err, stdout, stderr) {
-    res.send(query);
+    console.log(stdout);
+    res.send(stdout);
     res.end();
   });
 
