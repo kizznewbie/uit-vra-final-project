@@ -8,14 +8,22 @@
     <script src="/js/all.js"></script>
   </head>
   <body>
-    <div id="popup">
+    <div id="popup-result" class="popup">
       <div class="popup-content">
         <div class="content">
           <div id="popup-close-btn">X</div>
-          <div class="img-wrapper"><img src="/upload/image-1497562871834.jpg" class="img-item"/></div>
-          <div class="img-wrapper"><img src="/upload/image-1497562871834.jpg" class="img-item"/></div>
-          <div class="img-wrapper"><img src="/upload/image-1497562871834.jpg" class="img-item"/></div>
+          <div id="img-content">
+            <div class="img-wrapper"><img src="/upload/image-1497562871834.jpg" class="img-item"/></div>
+            <div class="img-wrapper"><img src="/upload/image-1497562871834.jpg" class="img-item"/></div>
+            <div class="img-wrapper"><img src="/upload/image-1497562871834.jpg" class="img-item"/></div>
+          </div>
         </div>
+      </div>
+      <div class="popup-overlay"></div>
+    </div>
+    <div id="popup-loading" class="popup">
+      <div class="popup-content">
+        <div class="content">Loading...</div>
       </div>
       <div class="popup-overlay"></div>
     </div>

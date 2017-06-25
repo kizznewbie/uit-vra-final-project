@@ -8,9 +8,11 @@ $(function() {
       browseBtn = $('#browse-btn'),
       fileBtn = $('#file-btn'),
       namespace = 'imageRetrieval',
-      popup = $('#popup'),
+      resultPopup = $('#popup-result'),
+      resultImg = resultPopup.find('#img-content'),
+      loadingPopup = $('#popup-loading'),
       popupCloseBtn = $('#popup-close-btn'),
-      popupOverlay = $('div.popup-overlay'),
+      popupOverlay = $('#popup-result div.popup-overlay'),
       isMouseDown = false,
       startX, startY, mouseMoveTimeout, w, h, imgW, imgH;
   var context, mouseMoveTimeout;
@@ -19,20 +21,32 @@ $(function() {
 
   };
 
-  var openPopup = function() {
+  var openPopup = function(popup) {
     popup.css('display', 'block');
     popup.animate({
       opacity: 1
     }, 500, 'swing');
   };
-  openPopup();
-  var closePopup = function() {
+
+  var closePopup = function(popup) {
 
     popup.animate({
       opacity: 0
     }, 500, 'swing', function() {
       popup.css('display', 'none');
     });
+  };
+
+  var renderResult = function(resultArr) {
+    var template = '<div class="img-wrapper">' +
+                      '<img src="{src}" class="img-item">' +
+                   '</div>';
+    resultImg.html('');
+    for(var i = 0; i < resultArr.length; i++) {
+      if(resultArr[i]) {
+        resultImg.append(template.replace('{src}', resultArr[i]));
+      }
+    }
   };
 
   var choosenImgMouseMove = function(e) {
@@ -74,13 +88,13 @@ $(function() {
       top: parseInt(overlay.css('top'))/imgW,
       left: parseInt(overlay.css('left'))/imgW,
     };
-    console.log(_css);
+    openPopup(loadingPopup);
     formData.append('image', fileBtn[0].files[0]);
     formData.append('css', JSON.stringify(_css));
     $.ajax({
       url: url,
       type: 'POST',
-      timeout: 1000*60*60,
+      timeout: 1000*60*60*24,
       processData: false,
       contentType: false,
       enctype: 'multipart/form-data',
@@ -89,9 +103,14 @@ $(function() {
     })
     .done(function(data, status, jqXHR) {
       console.log(data);
+      renderResult(data.resultArr);
+      openPopup(resultPopup);
     })
     .fail(function() {
       alert('fail to send request to Server! Please try again!');
+    })
+    .complete(function() {
+      closePopup(loadingPopup);
     });
   };
 
@@ -149,7 +168,6 @@ $(function() {
   fileBtn
     .off('change.' + namespace)
     .on('change.' + namespace, function(e) {
-      console.log(e);
       var reader = new FileReader();
       reader.onload = function() {
         choosenImg.attr('src', reader.result);
@@ -160,6 +178,6 @@ $(function() {
     .add(popupOverlay)
     .off('click.' + namespace)
     .on('click.' + namespace, function(e) {
-      closePopup();
+      closePopup(resultPopup);
     });
 });

@@ -27,6 +27,7 @@ app.use('/js', express.static(__dirname + '/public/js'));
 app.use('/css', express.static(__dirname + '/public/css'));
 app.use('/assets', express.static(__dirname + '/public/assets'));
 app.use('/upload', express.static(__dirname + '/upload'));
+app.use('/datasets', express.static(__dirname + '/datasets'));
 app.use('/', express.static(__dirname + '/public/'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -34,7 +35,7 @@ app.use(bodyParser.json());
 
 /**************Function***************/
 var buildMatlabQuery = function(filename, startX, startY, w, h) {
-  func = config.func + '(\'' + filename +'\',' + startX + ',' + startY + ',' + w + ',' + h + ')';
+  func = config.func + '(\'' + __dirname + config.uploadPath + filename +'\',' + startX + ',' + startY + ',' + w + ',' + h + ')';
   query = config.matlabBin
           + config.option
               .replace('{matlab_func}', func)
@@ -43,30 +44,22 @@ var buildMatlabQuery = function(filename, startX, startY, w, h) {
   return query;
 };
 
-var readResult = function(filename, callback) {
-  var fileName = config.logfile + filename + '.txt',
-      regEx =/\-\-\-Result from here\-\-\-([\w\W]*)\-\-\-end result here\-\-\-/,
-      res = [],
+var readResult = function(filename, _res) {
+  var regEx =/\-\-\-Result from here\-\-\-([\w\W]*)\-\-\-end result here\-\-\-/,
       re, name, accuracy, presision, idx;
-  fs.readFile(fileName, 'utf8', function(err, data) {
+  fs.readFile(filename, 'utf8', function(err, data) {
     if(err) {
-
+      console.log(err);
+      _res.send(500);
     }
     else {
       re = data.match(regEx)[1];
-      console.log(re);
       re = re.split('\n');
-      for(i = 0; i < re.length; i++) {
-        res[i] = {};
-        idx = re[i].search(':');
-        res[i].name = re[i].substring(0, idx - 1);
-        re[i] = re[i].substring(idx + 1, re[i].length - 1);
-        re[i] = re[i].split(' ');
-        res[i].accuracy = re[i][0];
-        res[i].presision = re[i][1];
-      }
-      console.log(res);
+      _res.send({
+        resultArr: re
+      });
     }
+    _res.end();
   });
 
 };
@@ -99,11 +92,9 @@ app.post('/query', upload.single('image'), function(req, res) {
     h = 1;
   }
 
-  query = buildMatlabQuery(__dirname + config.uploadPath + fileName, left, top, w, h);
+  query = buildMatlabQuery(fileName, left, top, w, h);
   exec(query, function(err, stdout, stderr) {
-    console.log(stdout);
-    res.send(stdout);
-    res.end();
+    readResult(config.logfile + fileName + '.txt', res);
   });
 
 });

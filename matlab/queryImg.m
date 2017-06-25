@@ -57,7 +57,7 @@ function [] = queryImg(imgUrl, startX, startY, w, h)
     [sortedScore, idx] = sort(score, 'descend');
     fprintf('---Result from here---\n');
     for j = 1 : 10
-        fprintf('%s\n', ['/upload/' ,vars.imgNames{idx(j)}]);
+        fprintf('%s\n', [mergedDatasetUrl, '/' ,vars.imgNames{idx(j)}]);
     end;
     fprintf('---end result here---\n');
 end
