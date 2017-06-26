@@ -44,11 +44,23 @@
       background: white;
       cursor: pointer;
     }
+    div.clear-fix {
+      clear: both;
+      width: 100%;
+      height: 0;
+    }
     .img-wrapper {
-      text-align: center;
       margin-top: 20px;
       img {
         max-width: 100%;
+      }
+      .col {
+        width: 25%;
+        text-align: center;
+        float: left;
+        img {
+          max-width: 90%;
+        }
       }
     }
   }

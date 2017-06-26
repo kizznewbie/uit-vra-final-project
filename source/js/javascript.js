@@ -42,12 +42,22 @@ $(function() {
 
   var renderResult = function(resultArr) {
     var template = '<div class="img-wrapper">' +
-                      '<img src="{src}" class="img-item">' +
+                      '<div class="col-1 col"><img src="{src0}" class="img-item"></div>' +
+                      '<div class="col-2 col"><img src="{src1}" class="img-item"></div>' +
+                      '<div class="col-3 col"><img src="{src2}" class="img-item"></div>' +
+                      '<div class="col-4 col"><img src="{src3}" class="img-item"></div>' +
+                      '<div class="clear-fix"></div>' +
                    '</div>';
     resultImg.html('');
     for(var i = 0; i < resultArr.length; i++) {
       if(resultArr[i]) {
-        resultImg.append(template.replace('{src}', resultArr[i]));
+        var re = resultArr[i].split(';');
+        resultImg.append(template
+                          .replace('{src0}', re[0])
+                          .replace('{src1}', re[1])
+                          .replace('{src2}', re[2])
+                          .replace('{src3}', re[3])
+                        );
       }
     }
   };
