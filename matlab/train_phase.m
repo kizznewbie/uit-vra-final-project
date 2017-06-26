@@ -6,6 +6,10 @@
 % vars.imgNames = names;
 % vars.numWords1 = 500;
 % vars.numWords2 = 1000;
+% vars.outputDir = outputDir;
+% vars.datasetUrl = datasetUrl;
+% vars.mergedDatasetUrl = mergedDatasetUrl;
+% vars.testDatasetUrl = testDatasetUrl;
 % peakThresh = 28 / 256^2;
 % frames_sift = {};
 % descs_sift = {};
