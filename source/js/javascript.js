@@ -28,12 +28,15 @@ $(function() {
     }, 500, 'swing');
   };
 
-  var closePopup = function(popup) {
+  var closePopup = function(popup, callback) {
 
     popup.animate({
       opacity: 0
     }, 500, 'swing', function() {
       popup.css('display', 'none');
+      if(callback) {
+        callback();
+      }
     });
   };
 
@@ -103,14 +106,15 @@ $(function() {
     })
     .done(function(data, status, jqXHR) {
       console.log(data);
-      renderResult(data.resultArr);
-      openPopup(resultPopup);
+      closePopup(loadingPopup, function() {
+        renderResult(data.resultArr);
+        openPopup(resultPopup);
+      });
     })
     .fail(function() {
-      alert('fail to send request to Server! Please try again!');
-    })
-    .complete(function() {
-      closePopup(loadingPopup);
+      closePopup(loadingPopup, function() {
+        alert('fail to send request to Server! Please try again!');
+      });
     });
   };
 
