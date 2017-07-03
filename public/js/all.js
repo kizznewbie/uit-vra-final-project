@@ -101,7 +101,7 @@ $(function() {
     var _css = {
       w: w/imgW,
       h: h/imgH,
-      top: parseInt(overlay.css('top'))/imgW,
+      top: parseInt(overlay.css('top'))/imgH,
       left: parseInt(overlay.css('left'))/imgW,
     };
     openPopup(loadingPopup);

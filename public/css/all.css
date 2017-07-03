@@ -67,7 +67,7 @@ body {
           max-width: 90%; }
   .popup .popup-overlay {
     background: black;
-    opacity: 0.5;
+    opacity: 0.7;
     position: absolute;
     top: 0;
     left: 0;
