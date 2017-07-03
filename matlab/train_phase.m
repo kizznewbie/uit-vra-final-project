@@ -17,11 +17,11 @@
 % descs_covdet = {};
 % imdb = {};
 % 
-% % 
-% % 
-% % % 
+% %
+% %
+% % %
 % for i = 1 : vars.numImgs
-%     
+% 
 %     im = imread([mergedDatasetUrl, '/', names{i}]);
 %     im = resizeImg(im);
 %     if size(im, 3) == 3
@@ -38,8 +38,8 @@
 %     descs_covdet{i} = desc_covdet;
 %     imdb{i} = im;
 % end;
-% % % % 
-% % % % 
+% % % %
+% % % %
 % save([outputDir, '/', 'vars.m'], 'vars', '-mat', '-v7.3');
 % save([outputDir, '/', 'raw_frames_covdet.m'], 'frames_covdet', '-mat', '-v7.3');
 % save([outputDir, '/', 'raw_descs_covdet.m'], 'descs_covdet', '-mat', '-v7.3');
@@ -52,12 +52,12 @@
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % descs_raw_sift = descs_sift;
 % descs_raw_covdet = descs_covdet;
-% % 
+% %
 % fprintf('Getting sample to clustering... %d samples \n', 10e4);
-% % 
+% %
 % descs_sift_10e4 = vl_colsubset(cat(2, descs_sift{:}), 10e4);
 % descs_covdet_10e4 = vl_colsubset(cat(2, descs_covdet{:}), 10e4);
-% % % 
+% % %
 % descs_sift = single(descs_sift_10e4);
 % descs_covdet = single(descs_covdet_10e4);
 % 
@@ -74,6 +74,16 @@
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % % % % % % CLUSTERING 1000 VISUAL WORDS %%%%%%%%%%%%%%%%
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% descs_sift = descs_raw_sift;
+% descs_covdet = descs_raw_covdet;
+% 
+% fprintf('Getting sample to clustering... %d samples \n', 10e4);
+% %
+% descs_sift_10e4 = vl_colsubset(cat(2, descs_sift{:}), 10e4);
+% descs_covdet_10e4 = vl_colsubset(cat(2, descs_covdet{:}), 10e4);
+% % %
+% descs_sift = single(descs_sift_10e4);
+% descs_covdet = single(descs_covdet_10e4);
 % 
 % fprintf('KNN SIFT with %d points \n', vars.numWords2);
 % 
@@ -84,28 +94,28 @@
 % 
 % save([outputDir, '/', 'vocab10_sift.m'], 'vocab10_sift', '-mat', '-v7.3');
 % save([outputDir, '/', 'vocab10_covdet.m'], 'vocab10_covdet', '-mat', '-v7.3');
-
+% 
 % 
 % fprintf('Building kdtree\n');
 % kdtree5_sift = vl_kdtreebuild(vocab5_sift);
 % kdtree10_sift = vl_kdtreebuild(vocab10_sift);
 % kdtree5_covdet = vl_kdtreebuild(vocab5_covdet);
 % kdtree10_covdet = vl_kdtreebuild(vocab10_covdet);
-% % % 
+% % %
 % save([outputDir, '/', 'kdtree5_sift.m'], 'kdtree5_sift', '-mat', '-v7.3');
 % save([outputDir, '/', 'kdtree10_sift.m'], 'kdtree10_sift', '-mat', '-v7.3');
 % save([outputDir, '/', 'kdtree5_covdet.m'], 'kdtree5_covdet', '-mat', '-v7.3');
 % save([outputDir, '/', 'kdtree10_covdet.m'], 'kdtree10_covdet', '-mat', '-v7.3');
 % % load([outputDir, '/', 'kdtree5_1000.m'], '-mat');
 % 
-descs_sift = descs_raw_sift;
-descs_covdet = descs_raw_covdet;
-
+% descs_sift = descs_raw_sift;
+% descs_covdet = descs_raw_covdet;
+% 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % % % % % % Get visual word of each image %%%%%%%%%%%%%%%%
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 
-
+% 
 % fprintf('Query visual words for each image\n');
 % imgInvidualVisualWords_sift_5 = cell(1, vars.numImgs);
 % imgInvidualVisualWords_sift_10 = cell(1, vars.numImgs);
@@ -123,7 +133,7 @@ descs_covdet = descs_raw_covdet;
 % save([outputDir, '/', 'imgInvidualVisualWords_covdet_5.m'], 'imgInvidualVisualWords_covdet_5', '-mat', '-v7.3');
 % save([outputDir, '/', 'imgInvidualVisualWords_covdet_10.m'], 'imgInvidualVisualWords_covdet_10', '-mat', '-v7.3');
 % % load([outputDir, '/', 'imgInvidualVisualWords5_1000.m'], '-mat');
-% 
+
 fprintf('Creating inverted index\n');
 % Creating Inverted Index
 idx_sift_5 = cell(1, vars.numImgs);
@@ -145,10 +155,10 @@ save([outputDir, '/', 'invertedIdx_sift_5.m'], 'invertedIdx_sift_5', '-mat', '-v
 save([outputDir, '/', 'invertedIdx_sift_10.m'], 'invertedIdx_sift_10', '-mat', '-v7.3');
 save([outputDir, '/', 'invertedIdx_covdet_5.m'], 'invertedIdx_covdet_5', '-mat', '-v7.3');
 save([outputDir, '/', 'invertedIdx_covdet_10.m'], 'invertedIdx_covdet_10', '-mat', '-v7.3');
-% % load([outputDir, '/', 'invertedIdx.m'], '-mat');
-% 
+% load([outputDir, '/', 'invertedIdx.m'], '-mat');
+
 fprintf('Calculating IDF Weighting\n');
-%IDF weighting
+% IDF weighting
 idf_sift_5 = log(vars.numImgs) - log(max(sum(invertedIdx_sift_5, 2) ,1));
 idf_sift_10 = log(vars.numImgs) - log(max(sum(invertedIdx_sift_10, 2) ,1));
 idf_covdet_5 = log(vars.numImgs) - log(max(sum(invertedIdx_covdet_5, 2) ,1));
@@ -182,6 +192,6 @@ save([outputDir, '/', 'invertedIdx_idf_l2_sift_10.m'], 'invertedIdx_idf_l2_sift_
 save([outputDir, '/', 'invertedIdx_idf_l2_covdet_5.m'], 'invertedIdx_idf_l2_covdet_5', '-mat', '-v7.3');
 save([outputDir, '/', 'invertedIdx_idf_l2_covdet_10.m'], 'invertedIdx_idf_l2_covdet_10', '-mat', '-v7.3');
 
-% % load([outputDir, '/', 'invertedIdx_idf.m'], '-mat');
-% % load([outputDir, '/', 'idf.m'], '-mat');
-% % load([outputDir, '/', 'invertedIdx_idf_l2.m'], '-mat');
+% load([outputDir, '/', 'invertedIdx_idf.m'], '-mat');
+% load([outputDir, '/', 'idf.m'], '-mat');
+% load([outputDir, '/', 'invertedIdx_idf_l2.m'], '-mat');

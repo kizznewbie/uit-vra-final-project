@@ -54,7 +54,7 @@ $(function() {
       if(resultArr[i]) {
         var re = resultArr[i].split(';');
         resultImg.append(template
-                          .replace('{rank}', i + 1)
+                          .replace('{rank}', i)
                           .replace('{src0}', re[0])
                           .replace('{src1}', re[1])
                           .replace('{src2}', re[2])
@@ -84,11 +84,12 @@ $(function() {
       _css.height = h;
     }
     if(w < 0) {
+      // console.log(imgW, ' ', startX, ' ', w);
       _css.right = imgW - startX;
       _css.width = Math.abs(w);
     }
     else {
-      _css.left = startY;
+      _css.left = startX;
       _css.width = w;
     }
     overlay.css(_css);
@@ -150,6 +151,8 @@ $(function() {
       startY = e.offsetY;
       startX = e.offsetX;
       overlay.css({
+        width: 0,
+        height: 0,
         top: e.offsetY,
         left: e.offsetX,
         'display': 'block'
