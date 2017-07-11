@@ -43,10 +43,14 @@ $(function() {
   var renderResult = function(resultArr) {
     var template = '<div class="img-wrapper">' +
                       '<div class="col-1 col">{rank}</div>' +
-                      '<div class="col-2 col"><img src="{src0}" class="img-item"></div>' +
-                      '<div class="col-3 col"><img src="{src1}" class="img-item"></div>' +
-                      '<div class="col-4 col"><img src="{src2}" class="img-item"></div>' +
-                      '<div class="col-5 col"><img src="{src3}" class="img-item"></div>' +
+                      '<div class="col-2 col">' +
+                        '<div class="title">{title0}</div>' +
+                        '<img src="{src0}" class="img-item">' +
+                      '</div>' +
+                      '<div class="col-3 col">' +
+                        '<div class="title">{title1}</div>' +
+                        '<img src="{src1}" class="img-item">' +
+                      '</div>' +
                       '<div class="clear-fix"></div>' +
                    '</div>';
     resultImg.html('');
@@ -56,9 +60,9 @@ $(function() {
         resultImg.append(template
                           .replace('{rank}', i)
                           .replace('{src0}', re[0])
+                          .replace('{title0}', re[0])
                           .replace('{src1}', re[1])
-                          .replace('{src2}', re[2])
-                          .replace('{src3}', re[3])
+                          .replace('{title1}', re[1])
                         );
       }
     }

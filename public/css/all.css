@@ -56,13 +56,18 @@ body {
       .popup .popup-content .img-wrapper img {
         max-width: 100%; }
       .popup .popup-content .img-wrapper .col {
-        width: 22.5%;
+        width: 45%;
         text-align: center;
         float: left; }
+        .popup .popup-content .img-wrapper .col .title {
+          text-align: center;
+          padding: 10px;
+          font-style: italic;
+          font-weight: bold; }
         .popup .popup-content .img-wrapper .col.col-1 {
           width: 10%; }
         .popup .popup-content .img-wrapper .col:last-child {
-          width: 22%; }
+          width: 24%; }
         .popup .popup-content .img-wrapper .col img {
           max-width: 90%; }
   .popup .popup-overlay {
