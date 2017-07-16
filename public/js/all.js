@@ -194,6 +194,14 @@ $(function() {
       var reader = new FileReader();
       reader.onload = function() {
         choosenImg.attr('src', reader.result);
+        isMouseDown = false;
+        startY = 0;
+        startX = 0;
+        overlay.css({
+          width: 0,
+          height: 0,
+          'display': 'none'
+        });
       };
       reader.readAsDataURL(e.originalEvent.srcElement.files[0]);
     });
